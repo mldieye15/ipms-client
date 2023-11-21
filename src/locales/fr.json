@@ -5,6 +5,7 @@
     "allrightreserved": "Tous droits réservés",
     "close": "Fermer",
     "added": "Ajout effectué avec succés!",
+    "saved": "Enregistré avec succés!",
     "updated": "Modification effectué!",
     "deleted": "Supression effectué!",
     "apple": "pas de pommes | une pomme | {count} pommes",
@@ -14,8 +15,8 @@
                 "monespace": "Mon espace",
                 "profile": "Mon profil",
                 "inscription": "S'inscrire",
-                "connexion": "Se déconnecter",
-                "deconnexion": "S'authentifier",
+                "deconnexion": "Se déconnecter",
+                "connexion": "S'authentifier",
                 "aide": "Aide"
             }
         },

@@ -1,37 +1,66 @@
 import axios from 'axios';
+import { useRouter } from 'vue-router'
+/*import { useUserStore } from "@/store/user";
 
+const router = useRouter();
+const userStore = useUserStore();
+const { resetCredentials, refreshToken } = userStore;
+const  refreshtokenURL = '/auth/v1/refresh-token';
+*/
 let lang = localStorage.getItem('lang') || import.meta.env.VITE_I18N_LOCALE || 'fr';
 
+
 const defaultOptions = {
-baseURL: import.meta.env.VITE_BASE_URL,
-crossdomain: true,
-// withCredentials: true,
-headers: {
-  'Access-Control-Allow-Origin': '*',
+  baseURL: import.meta.env.VITE_BASE_URL,
+  crossdomain: true,
+  //withCredentials: true,
+  headers: {
+    'Access-Control-Allow-Origin': '*',
     'Content-Type': 'application/json',
     'Accept': 'application/json',
     'Accept-Language': lang,
     'X-localization': lang,
-    }
+  }
 };
 
 let axiosInstance = axios.create(defaultOptions);
 
-export default axiosInstance;
+/* `axiosInstance` is an instance of the Axios library that is configured with default options. It is
+used to make HTTP requests to a server. The default options include the base URL, cross-domain
+settings, headers, and interceptors. The interceptors are used to modify the request and response
+before they are sent or received. */
+axiosInstance.interceptors.request.use(function (config) {
+  const token = localStorage.getItem('token');
+  config.headers.Authorization =  token ? `Bearer ${token}` : '';
+  return config;
+});
 /*
-
-import axios from 'axios'
-
-export default {
-    install: (app, options) => {
-        app.config.globalProperties.axios = axios.create({
-            baseURL: options.baseUrl,
-            withCredentials: true,
-            headers: {
-                Authorization: options.token ? `Bearer ${options.token}` : '',
-            }
-        })
+//  Add a response interceptor
+axiosInstance.interceptors.response.use(
+  function(response){
+    return response;
+  },
+  async function(error) {
+    const originalRequest = error.config;
+    if ( error.response.status === 400 ) {
+      resetCredentials();
+      router.push( { name: 'login'});
+      return Promise.reject(error);
+    } else if ( error.response.status === 401 && originalRequest.url.includes(refreshtokenURL)) {
+      resetCredentials();
+      router.push( { name: 'login'});
+      //router.push("/login");
+      return Promise.reject(error);
+    } else if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      await refreshToken();
+      const token = localStorage.getItem('token');
+      error.config.headers.Authorization =  `Bearer ${token}`;
+      return axiosInstance(originalRequest);
     }
-}
+    return Promise.reject(error);
+  }
+);*/
 
-*/
+//
+export default axiosInstance;
