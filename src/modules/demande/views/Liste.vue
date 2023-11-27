@@ -43,7 +43,7 @@
                     <router-link :to="{ name: 'demande-details', params: { id: item.id } }"> <v-icon small flat color="green dark">mdi-thumb-up</v-icon> </router-link>
                     <router-link :to="{ name: 'demande-edit', params: { id: item.id } }" class="ml-4"> <v-icon small flat color="blue dark">mdi-pencil</v-icon> </router-link>
                     -->
-                    <v-dialog transition="dialog-top-transition" width="50%" height="auto">
+                    <v-dialog transition="dialog-top-transition" width="50%" height="auto" v-model="dialog" persistent>
                       <template v-slot:activator="{ props }">
                         <v-btn variant="text"  class="text" v-bind="props">
                           <v-icon small flat green="green dark">mdi-thumb-up</v-icon>
@@ -57,14 +57,14 @@
                             <div class="text-h6">{{ $t('apps.forms.acceptDemandMessage') }}</div>
                           </v-card-text>
                           <v-card-actions class="justify-end">
-                            <v-btn variant="text" color="primary" @click="isActive.value = false">{{ $t('apps.forms.annuler') }}</v-btn>
+                            <v-btn variant="text" color="primary" @click="dialog = false">{{ $t('apps.forms.annuler') }}</v-btn>
                             <v-btn variant="outlined" color="black"  @click="accept(item.imputation)">{{ $t('apps.forms.oui') }}</v-btn>
                           </v-card-actions>
                         </v-card>
                       </template>
                     </v-dialog>
 
-                    <v-dialog transition="dialog-top-transition" width="50%" height="auto">
+                    <v-dialog transition="dialog-top-transition" width="50%" height="auto" v-model="dialog2" persistent>
                       <template v-slot:activator="{ props }">
                         <v-btn variant="text"  class="text" v-bind="props">
                           <v-icon small flat color="red dark">mdi-thumb-down</v-icon>
@@ -78,7 +78,7 @@
                             <div class="text-h6">{{ $t('apps.forms.refuseDemandMessage') }}</div>
                           </v-card-text>
                           <v-card-actions class="justify-end">
-                            <v-btn variant="text" color="primary" @click="isActive.value = false">{{ $t('apps.forms.annuler') }}</v-btn>
+                            <v-btn variant="text" color="primary" @click="dialog2 = false">{{ $t('apps.forms.annuler') }}</v-btn>
                             <v-btn variant="outlined" color="black"  @click="reject(item.imputation)">{{ $t('apps.forms.oui') }}</v-btn>
                           </v-card-actions>
                         </v-card>
@@ -105,7 +105,7 @@
                 <v-spacer></v-spacer>
 
                 <v-col cols="auto">
-                  <v-btn variant="outlined" color="blue"  class="text" v-bind="props">
+                  <v-btn variant="outlined" color="blue"  class="text" v-bind="props" @click="refresh">
                     <v-icon small flat green="green dark">mdi-refresh</v-icon>
                   </v-btn>
                 </v-col>
@@ -158,7 +158,7 @@
                             <div class="text-h6">{{ $t('apps.forms.refuseDemandMessage') }}</div>
                           </v-card-text>
                           <v-card-actions class="justify-end">
-                            <v-btn variant="text" color="primary" @click="isActive.value = false">{{ $t('apps.forms.annuler') }}</v-btn>
+                            <v-btn variant="text" color="primary" @click="isActive = false">{{ $t('apps.forms.annuler') }}</v-btn>
                             <v-btn variant="outlined" color="black"  @click="refresh">{{ $t('apps.forms.oui') }}</v-btn>
                           </v-card-actions>
                         </v-card>
@@ -197,6 +197,8 @@ const liste = reactive({ items: [] });
 const headers = reactive({ items: [] });
 const searchValue = ref("");
 const dialog = ref(false);
+const dialog2 = ref(false);
+const isActive = ref(false);
 const DEMANDE_NON_TRAITE = 0;
 const DEMANDE_TRAITE = 1;
 //
@@ -211,16 +213,15 @@ onMounted(()=>{
 
 const accept = (id) => {
   approve(id).then( () => {
-    all(DEMANDE_NON_TRAITE);
-    dialog.value=false;
     addNotification({
         show: true,
         text:  i18n.t('saved'),
         color: 'blue'
       });
 
-      //all(DEMANDE_NON_TRAITE);
   });
+  isActive.value=false;
+  dialog.value=false;
 }
 
 const refresh = () => {
@@ -234,9 +235,10 @@ const reject = (id) => {
         text:  i18n.t('saved'),
         color: 'blue'
       });
-      dialog.value=false;
-      all(DEMANDE_NON_TRAITE);
+      this.refresh();
   });
+  isActive.value=false;
+  dialog2.value=false;
 }
 </script>
 <style scoped>

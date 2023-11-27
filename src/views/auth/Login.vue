@@ -8,6 +8,18 @@
     >
     <h2 class="mx-auto text-subtitle-6 text-medium-emphasis text-center">{{ $t('auth.forms.authentification.titre') }}</h2>
     <v-divider class="my-3" color="white"></v-divider>
+
+    <v-alert
+      color="error"
+      closable
+      variant="outlined"
+      border="start"
+      border-color="red"
+      elevation="1"
+      :text="$t('auth.forms.authentification.badcrentials') "
+      class="mb-3"
+      v-if="error"
+    ></v-alert>
     <v-form @submit.prevent="submit" ref="loginForm" :value="formValid">
       <v-text-field
         density="compact"
@@ -20,7 +32,7 @@
         color="balck"
       ></v-text-field>
 
-      <div  class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
+      <div class="text-subtitle-1 text-medium-emphasis d-flex align-center justify-space-between">
         &nbsp;
         <router-link :to="{name:'home'}" class="text-caption text-decoration-none text-blue font-italic">{{ $t('auth.forms.authentification.mdpoublie') }}</router-link>
       </div>
@@ -53,57 +65,6 @@
       </div>
     </v-card-text>
     </v-card>
-    <!--<v-container fluid  class="d-flex flex-column align-center" style="height: 80vh">
-      <v-layout>
-        <v-flex xs12 sm8 md4>
-          <v-card class="elevation-3" min-width="500">
-            <v-toolbar class="px-2 bg-blue">
-              <v-toolbar-title >{{ $t('auth.forms.authentification.titre') }}</v-toolbar-title>
-            </v-toolbar>
-            <v-form @submit.prevent="submit" ref="loginForm" :value="formValid">
-              <v-card-text>
-                {{userForm}}
-                <v-text-field
-                  prepend-inner-icon="mdi-account"
-                  name="username"
-                  :label="$t('auth.forms.authentification.username')"
-                  type="text"
-                  variant="underlined"
-                  v-model="userForm.email"
-                ></v-text-field>
-                <v-text-field
-                  id="password"
-                  prepend-inner-icon="mdi-lock"
-                  name="password"
-                  :label="$t('auth.forms.authentification.mdp')"
-                  :append-icon="showPwd ? 'mdi-eye' : 'mdi-eye-off'"
-                  :rules="[rules.required, rules.min]"
-                  :type="showPwd ? 'text' : 'password'"
-                  @click:append="showPwd = !showPwd"
-                  v-model="userForm.password"
-                  variant="underlined"
-                ></v-text-field>
-                <p class="subheading font-weight-regular text-white-50">
-                  <router-link :to="{name:'home'}" class="text">{{ $t('auth.forms.authentification.mdpoublie') }}</router-link>
-                </p>
-            </v-card-text>
-            <v-card-actions class="d-flex flex-column px-2">
-              <v-btn type="submit" variant="outlined" color="primary" block class="mt-2" @click="handleLogin">{{ $t('auth.forms.authentification.btnconn') }}</v-btn>
-
-            </v-card-actions>
-          </v-form>
-          <div class=" mb-3 px-2">
-            <p class="subheading font-weight-regular text-white-50" style="align-items: flex-start;">
-              {{ $t('auth.forms.authentification.pasdecompte') }}
-              </p>
-                <p class="text-body-2 ">
-                  {{ $t('auth.forms.authentification.pasdecompte') }} <router-link :to="{name:'register'}" class="text">{{ $t('public.nav.top.inscription') }}</router-link>
-                </p>
-            </div>
-          </v-card>
-        </v-flex>
-      </v-layout>
-    </v-container>-->
   </div>
 </template>
 
@@ -147,17 +108,18 @@ const rules = reactive({
 
 //  traitement de la connexion
 const handleLogin = () => {
-
   if(instance.refs.loginForm.validate){
      login(userForm).then( () => {
-      console.log("Debug 2: ",userForm);
+
       router.push( { name: 'dashboard'});
+
       addNotification({
         show: true,
         text:  i18n.t('welcome')+' '+user.fullname,
         color: 'black'
       });
     });
+
   }
 }
 </script>

@@ -27,6 +27,7 @@ export const useUserStore = defineStore('user', {
     getUser: (state) => state.user,
     getRefreshToken: (state) => state.refreshToken,
     getUsername: (state) => state.username,
+    getError: (state) => state.error,
   },
 
   actions: {
@@ -34,7 +35,7 @@ export const useUserStore = defineStore('user', {
     async login(payload){
       this.user = null;
       this.loading = true;
-      console.log(payload);
+      this.error = null
       try {
         //`${loginURL}`
         await axios.post(loginURL, payload)
@@ -49,6 +50,7 @@ export const useUserStore = defineStore('user', {
               photo: response.data.photo,
               initiale: response.data.initiale
             };
+            this.error = false
             console.log(this.user);
             this.changeLoggedIn(true);
             this.refreshToken = response.data.refreshToken;
@@ -58,7 +60,7 @@ export const useUserStore = defineStore('user', {
         })
       } catch (error) {
         console.log(error);
-        this.error = error
+        this.error = true
       } finally {
         this.loading = false
       }

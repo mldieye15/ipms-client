@@ -45,6 +45,7 @@
                 "username": "Username",
                 "mdp": "Password",
                 "mdpoublie": "Forgot password?",
+                "badcrentials": "Incorrect login or password.",
                 "btnconn": "Login",
                 "pasdecompte": "Don't have an account?"
             }
