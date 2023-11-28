@@ -30,16 +30,16 @@
           <v-btn icon x-large v-bind="props">
             <v-avatar color="white" size="46" light >
               <!--<v-img alt="Logo" class="shrink logo" rounded lazy-src="" :src="imageUrl" transition="scale-transition" width="40"  />-->
-              <span black class="black--text text-h5">LD</span>
+              <span v-if="user != null" black class="black--text text-h5">{{ user.initiale }}</span>
             </v-avatar>
           </v-btn>
         </template>
         <v-card>
           <v-list-item-content class="justify-center">
             <div class="mx-auto text-center">
-              <h3>Lamine DIEYE</h3>
-              <p class="text-caption mt-1">
-                mldieye
+              <h3 v-if="user != null">{{ user.fullname }} </h3>
+              <p class="text-caption mt-1" v-if="user != null">
+                {{ user.username }}
               </p>
               <v-divider class="my-3"></v-divider>
               <router-link :to="{name:'profile'}" class="text">{{ $t('public.nav.top.profile') }}</router-link>
@@ -59,7 +59,7 @@
             <v-avatar size="100">
               <v-img alt="Logo" class="shrink logo" rounded lazy-src="" :src="profileUrl" transition="scale-transition" width="60"  />
             </v-avatar>
-            <p class="text-white subheading mt-1 text-center">mldieye</p>
+            <p  v-if="user != null" class="text-white subheading mt-1 text-center">{{ user.username }}</p>
         </v-flex>
       </v-layout>
       <v-divider class="mx-10 mt-3"></v-divider>
@@ -76,15 +76,29 @@ import SidebarItem from '@/components/core/SidebarItem.vue';
 
 import { ref, onMounted, reactive } from 'vue';
 import { storeToRefs } from "pinia";
+import { useRouter } from 'vue-router'
 import { useAppStore } from "@/store/app";
+import { useUserStore } from "@/store/user";
+import { useNotificationStore } from "@/store/notification";
 
 
 const appStore = useAppStore();
+const userStore = useUserStore();
 const { modules, fonctionnalites } = storeToRefs(appStore);
-const { listeModules, listeFonctionnalitesByModule } = useAppStore();
+const { listeModules, listeFonctionnalitesByModule } = appStore;
+const { user } = storeToRefs(userStore);
+const { logout } = userStore;
 
 const drawer = ref(true);
 const fonctionItems = reactive({ items: [] });
+
+const router = useRouter();
+//
+import { useI18n } from "vue-i18n";
+const i18n = useI18n();
+
+const notificationStore = useNotificationStore();
+const { addNotification } = notificationStore;
 
 defineProps({
   appName: String,
@@ -125,6 +139,14 @@ const loadFonction = async (module) => {
 //  deconnexion
 const handleLogout = () => {
   console.log("handleLogout clicked");
+  logout().then( () => {
+      router.push( { name: 'login'});
+      addNotification({
+        show: true,
+        text:  i18n.t('welcome')+' '+user.fullname,
+        color: 'black'
+      });
+    });
 }
 </script>
 
