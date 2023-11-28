@@ -82,9 +82,13 @@
             "oui": "Yes",
             "non": "No",
             "annuler": "Cancel",
-            "academie": {
+            "accept": "Accept",
+            "reject": "Reject",
+            "demande": {
                 "academie": "Demand",
-                "nom": "Academy name"
+                "nom": "Damand name",
+                "historique": "Historic",
+                "traitement": "Processing"
             },
             "ville": {
                 "ville": "Cities",

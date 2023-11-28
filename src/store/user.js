@@ -69,9 +69,11 @@ export const useUserStore = defineStore('user', {
     async logout(){
       //this.user = null;
       this.loading = true;
+      let refreshTokenLocal = localStorage.getItem('refreshToken');//(this.refreshToken == " ") ? localStorage.getItem('refreshToken') : this.refreshToken;
+      let usernameLocal = localStorage.getItem('username'); // this.username || localStorage.getItem('username');
       const payload = {
-        refreshToken: this.refreshToken,
-        username: this.username
+        refreshToken: refreshTokenLocal, //this.refreshToken,
+        username: usernameLocal //this.username
       };
       console.log(payload);
       try {

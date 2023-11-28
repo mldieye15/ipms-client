@@ -77,9 +77,13 @@
             "oui": "نعم",
             "non": "لا",
             "annuler": "يلغي",
-            "academie": {
+            "accept": "يقبل",
+            "reject": "يرفض",
+            "demande": {
                 "academie": "الطلبات",
-                "nom": "اسم الاكاديمية"
+                "nom": "اسم الاكاديمية",
+                "historique": "تاريخي",
+                "traitement": "طلب المعالجة"
             },
             "ville": {
                 "ville": "مدن",

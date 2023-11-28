@@ -6,6 +6,7 @@
       <v-tabs v-model="tab" bg-color="primary" >
         <v-tab value="nontraite">Non traité</v-tab>
         <v-tab value="traite">Traité</v-tab>
+        <v-tab value="rejete">Rejeté</v-tab>
       </v-tabs>
 
       <v-card-text>
@@ -15,7 +16,7 @@
               <v-row class="mb-0 mx-auto pa-1"  align="center">
                 <v-col cols="12" sm="6" md="4" >
                   <v-text-field
-                    label="Underlined"
+                    label="Matricule ou ..."
                     placeholder="Placeholder"
                     variant="underlined"
                     append-inner-icon="mdi-magnify"
@@ -30,60 +31,21 @@
                   </v-btn>
                 </v-col>
               </v-row>
+              <div id="row-clicked"></div>
               <EasyDataTable
                 :headers="headerTable"
                 :items="dataListe"
                 :loading="loading"
                 buttons-pagination
                 :search-value="searchValue"
+                show-index
+                v-model:items-selected="itemsSelected"
+                @click-row="showRow"
               >
                 <template #item-actions="item">
                   <div class="actions-wrapper">
-                    <!--
-                    <router-link :to="{ name: 'demande-details', params: { id: item.id } }"> <v-icon small flat color="green dark">mdi-thumb-up</v-icon> </router-link>
-                    <router-link :to="{ name: 'demande-edit', params: { id: item.id } }" class="ml-4"> <v-icon small flat color="blue dark">mdi-pencil</v-icon> </router-link>
-                    -->
-                    <v-dialog transition="dialog-top-transition" width="50%" height="auto" v-model="dialog" persistent>
-                      <template v-slot:activator="{ props }">
-                        <v-btn variant="text"  class="text" v-bind="props">
-                          <v-icon small flat green="green dark">mdi-thumb-up</v-icon>
-                        </v-btn>
-                      </template>
-                      <template v-slot:default="{ isActive }">
-                        <v-card>
-                          <v-toolbar color="primary" :title="$t('apps.forms.demande.demande')"></v-toolbar>
-                          <v-card-text>
-
-                            <div class="text-h6">{{ $t('apps.forms.acceptDemandMessage') }}</div>
-                          </v-card-text>
-                          <v-card-actions class="justify-end">
-                            <v-btn variant="text" color="primary" @click="dialog = false">{{ $t('apps.forms.annuler') }}</v-btn>
-                            <v-btn variant="outlined" color="black"  @click="accept(item.imputation)">{{ $t('apps.forms.oui') }}</v-btn>
-                          </v-card-actions>
-                        </v-card>
-                      </template>
-                    </v-dialog>
-
-                    <v-dialog transition="dialog-top-transition" width="50%" height="auto" v-model="dialog2" persistent>
-                      <template v-slot:activator="{ props }">
-                        <v-btn variant="text"  class="text" v-bind="props">
-                          <v-icon small flat color="red dark">mdi-thumb-down</v-icon>
-                      </v-btn>
-                      </template>
-                      <template v-slot:default="{ isActive }">
-                        <v-card>
-                          <v-toolbar color="primary" :title="$t('apps.forms.demande.demande')"></v-toolbar>
-                          <v-card-text>
-
-                            <div class="text-h6">{{ $t('apps.forms.refuseDemandMessage') }}</div>
-                          </v-card-text>
-                          <v-card-actions class="justify-end">
-                            <v-btn variant="text" color="primary" @click="dialog2 = false">{{ $t('apps.forms.annuler') }}</v-btn>
-                            <v-btn variant="outlined" color="black"  @click="reject(item.imputation)">{{ $t('apps.forms.oui') }}</v-btn>
-                          </v-card-actions>
-                        </v-card>
-                      </template>
-                    </v-dialog>
+                      <v-icon small flat color="green dark" @click="accept(item.imputation)">mdi-thumb-up</v-icon>
+                      <v-icon small flat color="red dark" class="ma-3" @click="reject(item.imputation)">mdi-thumb-down</v-icon>
                   </div>
                 </template>
               </EasyDataTable>
@@ -95,7 +57,7 @@
               <v-row class="mb-0 mx-auto pa-1"  align="center">
                 <v-col cols="12" sm="6" md="4" >
                   <v-text-field
-                    label="Underlined"
+                    label="Matricule ou ..."
                     placeholder="Placeholder"
                     variant="underlined"
                     append-inner-icon="mdi-magnify"
@@ -169,6 +131,47 @@
               </EasyDataTable>
             </v-container>
           </v-window-item>
+
+          <v-window-item value="rejete">
+            <v-container class="my-5" grid-list-xl>
+              <v-row class="mb-0 mx-auto pa-1"  align="center">
+                <v-col cols="12" sm="6" md="4" >
+                  <v-text-field
+                    label="Matricule ou ..."
+                    placeholder="Placeholder"
+                    variant="underlined"
+                    append-inner-icon="mdi-magnify"
+                    v-model="searchValue"
+                  ></v-text-field>
+                </v-col>
+                <v-spacer></v-spacer>
+
+                <v-col cols="auto">
+                  <v-btn variant="outlined" color="blue" class="text" v-bind="props" @click="refresh">
+                    <v-icon small flat green="green dark">mdi-refresh</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+              <div id="row-clicked"></div>
+              <EasyDataTable
+                :headers="headerTable"
+                :items="dataRejeteListe"
+                :loading="loading"
+                buttons-pagination
+                :search-value="searchValue"
+                show-index
+                v-model:items-selected="itemsSelected"
+                @click-row="showRow"
+              >
+                <template #item-actions="item">
+                  <div class="actions-wrapper">
+                      <v-icon small flat color="green dark" @click="accept(item.imputation)">mdi-thumb-up</v-icon>
+                      <v-icon small flat color="red dark" class="ma-3" @click="reject(item.imputation)">mdi-thumb-down</v-icon>
+                  </div>
+                </template>
+              </EasyDataTable>
+            </v-container>
+          </v-window-item>
         </v-window>
       </v-card-text>
       </v-card>
@@ -190,7 +193,7 @@ const notificationStore = useNotificationStore();
 const { addNotification } = notificationStore;
 
 const demandeStore = useDemandeStore();
-const { dataListe, headerTable, loading, dataTraiteListe } = storeToRefs(demandeStore);
+const { dataListe, headerTable, loading, dataTraiteListe, dataRejeteListe } = storeToRefs(demandeStore);
 const { all, approve, refuse } = demandeStore;
 
 const liste = reactive({ items: [] });
@@ -201,6 +204,8 @@ const dialog2 = ref(false);
 const isActive = ref(false);
 const DEMANDE_NON_TRAITE = 0;
 const DEMANDE_TRAITE = 1;
+const DEMANDE_ACCEPTE = 1;
+const DEMANDE_REJETE = 2;
 //
 const text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
 const tab = ref(null)
@@ -209,10 +214,12 @@ const tab = ref(null)
 onMounted(()=>{
   all(DEMANDE_NON_TRAITE);
   all(DEMANDE_TRAITE);
+  all(DEMANDE_REJETE);
 });
 
 const accept = (id) => {
-  approve(id).then( () => {
+  console.log("Imputation a accepter:", id);
+  approve(id, DEMANDE_ACCEPTE).then( () => {
     addNotification({
         show: true,
         text:  i18n.t('saved'),
@@ -220,13 +227,32 @@ const accept = (id) => {
       });
 
   });
-  isActive.value=false;
-  dialog.value=false;
-}
+  //isActive.value=false;
+  //dialog.value=false;
+  removeItem(id, DEMANDE_ACCEPTE);
+};
+
+const removeItem = (id, etat) => {
+  let newArray = []
+  dataListe.value.forEach((item) => {
+    if(item.imputation != id){
+      newArray.push(item);
+    } else{
+      if(etat === DEMANDE_ACCEPTE){
+        dataTraiteListe.value.unshift(item);
+      } else{
+        dataRejeteListe.value.unshift(item);
+      }
+    }
+  });
+  dataListe.value = [];
+  dataListe.value = newArray;
+};
 
 const refresh = () => {
   all(DEMANDE_NON_TRAITE);
   all(DEMANDE_TRAITE);
+  all(DEMANDE_REJETE);
 };
 const reject = (id) => {
   refuse(id).then( () => {
@@ -235,11 +261,12 @@ const reject = (id) => {
         text:  i18n.t('saved'),
         color: 'blue'
       });
-      this.refresh();
   });
-  isActive.value=false;
-  dialog2.value=false;
+  //isActive.value=false;
+  //dialog2.value=false;
+  removeItem(id, DEMANDE_REJETE);
 }
+
 </script>
 <style scoped>
 .v-text-field {

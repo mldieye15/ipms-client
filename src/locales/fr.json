@@ -77,9 +77,13 @@
             "oui": "Oui",
             "non": "Non",
             "annuler": "Annuler",
+            "accept": "Accepter",
+            "reject": "Rejeter",
             "demande": {
                 "demande": "Demandes",
-                "nom": "Nom de l'académie"
+                "nom": "Nom de la demane",
+                "historique": "Historique",
+                "traitement": "Traitement demende"
             },
             "ville": {
                 "ville": "Villes",
