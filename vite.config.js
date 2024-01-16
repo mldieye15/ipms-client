@@ -27,8 +27,7 @@ export default defineConfig({
       include: resolve(dirname(fileURLToPath(import.meta.url)), './src/locales/**')
     })
   ],
-  //base: '/ipms/', for prod
-  //base: '',
+  //base: '/ipms/', //
   define: { 'process.env': {} },
   resolve: {
     alias: {
@@ -46,7 +45,7 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    proxy: "http://172.16.1.63:8103",
+    //proxy: "http://172.16.1.63:8103",
   },
   //base: process.env.NODE_ENV === 'production' ? '/ipms/': '/',
 })

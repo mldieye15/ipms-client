@@ -38,7 +38,6 @@
                 :loading="loading"
                 buttons-pagination
                 :search-value="searchValue"
-                show-index
                 v-model:items-selected="itemsSelected"
                 @click-row="showRow"
               >
@@ -87,7 +86,7 @@
                     -->
                     <v-dialog transition="dialog-top-transition" width="50%" height="auto">
                       <template v-slot:activator="{ props }">
-                        <v-btn variant="text"  class="text" v-bind="props">
+                        <v-btn variant="text"  class="text" v-bind="props" @click="treatDialogClicked(item)">
                           <v-icon small flat green="green dark">mdi-file-document</v-icon>
                         </v-btn>
                       </template>
@@ -183,7 +182,7 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import { useDemandeStore } from "../store";
-import { onMounted, reactive, ref } from "vue"
+import { onMounted, ref } from "vue"
 import { useNotificationStore } from "@/store/notification";
 import { useI18n } from "vue-i18n";
 
@@ -196,18 +195,13 @@ const demandeStore = useDemandeStore();
 const { dataListe, headerTable, loading, dataTraiteListe, dataRejeteListe } = storeToRefs(demandeStore);
 const { all, approve, refuse } = demandeStore;
 
-const liste = reactive({ items: [] });
-const headers = reactive({ items: [] });
 const searchValue = ref("");
-const dialog = ref(false);
-const dialog2 = ref(false);
-const isActive = ref(false);
 const DEMANDE_NON_TRAITE = 0;
 const DEMANDE_TRAITE = 1;
 const DEMANDE_ACCEPTE = 1;
 const DEMANDE_REJETE = 2;
+//const clickedItem = reactive({});
 //
-const text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.'
 const tab = ref(null)
 //
 
@@ -218,7 +212,6 @@ onMounted(()=>{
 });
 
 const accept = (id) => {
-  console.log("Imputation a accepter:", id);
   approve(id, DEMANDE_ACCEPTE).then( () => {
     addNotification({
         show: true,
@@ -262,10 +255,12 @@ const reject = (id) => {
         color: 'blue'
       });
   });
-  //isActive.value=false;
-  //dialog2.value=false;
   removeItem(id, DEMANDE_REJETE);
 }
+/*const treatDialogClicked = (item) => {
+  console.log(item);
+  this.clickedItem=id;
+};*/
 
 </script>
 <style scoped>

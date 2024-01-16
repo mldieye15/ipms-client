@@ -7,7 +7,7 @@ import imputationRoutes from '@/modules/imputation/routes';
 
 const routes = [
   {
-    //path: '/ipms/', for prod
+    //path: '/ipms/',
     path: '/',
     component: () => import('@/layouts/default/Default.vue'),
     children: [
@@ -35,7 +35,7 @@ const routes = [
     ],
   },
   {
-    //path: '/ipms/auth', pour la production on ajouter /ipms
+    //path: '/ipms/auth',
     path: '/auth',
     component: () => import('@/layouts/auth/Default.vue'),
     children: [{

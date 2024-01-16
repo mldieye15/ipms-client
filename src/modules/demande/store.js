@@ -33,7 +33,6 @@ export const useDemandeStore = defineStore('demande', {
       }
     ],*/
     headerTable: [
-      { text: 'ID', value: 'imputation', align: 'start', sortable: true },
       { text: 'Matricule', value: 'matricule', align: 'start', sortable: true },
       { text: 'Demandeur', value: 'demandeur', align: 'start', sortable: true },
       { text: 'Bénéficiaire', value: 'beneficiaire', align: 'start', sortable: true },

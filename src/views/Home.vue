@@ -68,7 +68,6 @@
 
 <script setup>
 import heroImage from '@/assets/imgs/off1.jpeg'
-import heroImage2 from '@/assets/imgs/off2.jpg'
 import heroImage3 from '@/assets/imgs/off3.jpeg'
-import dir from '@/assets/imgs/dir2.jpeg'
+import dir from '@/assets/imgs/dir1.jpeg'
 </script>

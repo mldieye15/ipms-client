@@ -1,15 +1,23 @@
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import { createPinia, setActivePinia } from "pinia"
+
+const pinia = createPinia();
+setActivePinia(pinia);
+
+import { useUserStore } from "@/store/user";
+
+const router = useRouter();
+const  refreshtokenURL = '/auth/v1/refresh-token';
+
+const userStore = useUserStore();
+const { resetCredentials, refreshToken } = userStore;
 /*
 import { createPinia, setActivePinia } from "pinia"
 const pinia = createPinia();
 setActivePinia(pinia);
 */
 
-import { useUserStore } from "@/store/user";
-
-const router = useRouter();
-const  refreshtokenURL = '/auth/v1/refresh-token';
 //const userStore = useUserStore();
 //const { resetCredentials, refreshToken } = userStore;
 //const { resetCredentials, refreshToken } = userStore;
@@ -56,17 +64,17 @@ axiosInstance.interceptors.response.use(
   async function(error) {
     const originalRequest = error.config;
     if ( error.response.status === 400 ) {
-      //resetCredentials();
+      resetCredentials();
       router.push( { name: 'login'});
       return Promise.reject(error);
     } else if ( error.response.status === 401 && originalRequest.url.includes(refreshtokenURL)) {
-      //resetCredentials();
+      resetCredentials();
       router.push( { name: 'login'});
       router.push("/login");
       return Promise.reject(error);
     } else if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      //await refreshToken();
+      await refreshToken();
       const token = localStorage.getItem('token');
       error.config.headers.Authorization =  `Bearer ${token}`;
       return axiosInstance(originalRequest);

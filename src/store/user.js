@@ -75,7 +75,7 @@ export const useUserStore = defineStore('user', {
         refreshToken: refreshTokenLocal, //this.refreshToken,
         username: usernameLocal //this.username
       };
-      console.log(payload);
+      //console.log(payload);
       try {
         await axios.post(lougoutURL, payload).then((response) => {
           if(response.status === 200){
