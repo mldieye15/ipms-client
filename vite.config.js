@@ -12,6 +12,7 @@ import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  //publPath: process.env.NODE_ENV === 'production' ? '/ipms/': '/',
   plugins: [
     vue({
       template: { transformAssetUrls }
@@ -26,6 +27,7 @@ export default defineConfig({
       include: resolve(dirname(fileURLToPath(import.meta.url)), './src/locales/**')
     })
   ],
+  //base: '/ipms/', //
   define: { 'process.env': {} },
   resolve: {
     alias: {
@@ -43,6 +45,7 @@ export default defineConfig({
   },
   server: {
     port: 3000,
-    proxy: "http://localhost:8203"
+    //proxy: "http://172.16.1.63:8103",
   },
+  //base: process.env.NODE_ENV === 'production' ? '/ipms/': '/',
 })

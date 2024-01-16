@@ -7,6 +7,7 @@ import imputationRoutes from '@/modules/imputation/routes';
 
 const routes = [
   {
+    //path: '/ipms/',
     path: '/',
     component: () => import('@/layouts/default/Default.vue'),
     children: [
@@ -34,6 +35,7 @@ const routes = [
     ],
   },
   {
+    //path: '/ipms/auth',
     path: '/auth',
     component: () => import('@/layouts/auth/Default.vue'),
     children: [{
@@ -80,7 +82,8 @@ const routes = [
     ],
   },
   {
-      path: '/app',
+    //path: '/ipms/app',
+    path: '/app',
       name: 'app',
       component:  () => import('@/layouts/app/Default.vue'),
       children: [{
@@ -109,6 +112,7 @@ const routes = [
 ]
 
 const router = createRouter({
+  //mode: 'history',
   history: createWebHistory(process.env.BASE_URL),
   linkActiveClass: 'active-link',
   linkExactActiveClass: 'exact-active-link',

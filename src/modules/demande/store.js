@@ -16,6 +16,8 @@ const DEMANDE_REJETE = 2;
 export const useDemandeStore = defineStore('demande', {
   state: () => ({
     dataListe: [],  //  List des données à afficher pour la table
+    dataTraiteListe: [],  //  List des données à afficher pour la table
+    dataRejeteListe: [],  //  List des données à afficher pour la table
     dataDetails: {},  //  Détails d'un élment,
     loading: true,  //  utilisé pour le chargement
     /*breadcrumbs: [
@@ -41,7 +43,9 @@ export const useDemandeStore = defineStore('demande', {
   }),
 
   getters: {
-    getDataListe: (state) => state.dataListe
+    getDataListe: (state) => state.dataListe,
+    getDataTraiteListe: (state) => state.dataTraiteListe,
+
   },
 
   actions: {
@@ -51,7 +55,14 @@ export const useDemandeStore = defineStore('demande', {
         await axios.get(`${listeDemandeForViewURL}/${etat}`)
         .then((response) => {
           if(response.status === 200){
-            this.dataListe = response.data;
+            if(etat == DEMANDE_NON_TRAITE){
+              this.dataListe = response.data;
+            } else if(etat == DEMANDE_REJETE){
+              this.dataRejeteListe = response.data;
+            } else{
+              this.dataTraiteListe = response.data;
+            }
+
           }
         })
       } catch (error) {
@@ -61,6 +72,7 @@ export const useDemandeStore = defineStore('demande', {
         this.loading = false
       }
     },
+
     //  recupérer les informations d'une académie par son ide et le mettre dans la tabel dataDetails
     async one(demande) {
       try {
@@ -98,8 +110,6 @@ export const useDemandeStore = defineStore('demande', {
     //  modifier une demande
     async modify(id, payload) {
       try {
-        console.log("Id: ", id);
-        console.log("Payload: ", payload);
         await axios.put(`${modulesURL}/${id}`, payload)
         .then((response) => {
           if(response.status === 200 ){
@@ -116,40 +126,15 @@ export const useDemandeStore = defineStore('demande', {
 
     //  supprimer une demande
     async refuse(imputation) {
-      console.log(imputation);
-      try {
-        await axios.get(`${oneDemandeForViewURL}/${imputation}`)
-        .then((response) => {
-          if(response.status === 200){
-            console.log(response.data);
-            const result = response.data;
-            const imputationPayload = {
-              "patient": result.patient,
-              "structureSante": result.structureSante,
-              "typeImputation": result.typeImputation,
-              "imputation": result.imputation,
-              "suividemandeId": result.id,
-              "etat": DEMANDE_ACCEPTE
-            }
-            console.log(imputationPayload);
-          }
-        })
-      } catch (error) {
-        console.log(error);
-        this.error = error
-      } finally {
-        this.loading = false
-      }
+      this.approve(imputation, DEMANDE_REJETE);
     },
 
     //  approuver une demande
-    async approve(imputation) {
-      console.log(imputation);
+    async approve(imputation, etat) {
       try {
         await axios.get(`${oneDemandeForViewURL}/${imputation}`)
         .then((response) => {
           if(response.status === 200){
-            console.log(response.data);
             const result = response.data;
             const imputationPayload = {
               "patient": result.patient,
@@ -157,20 +142,22 @@ export const useDemandeStore = defineStore('demande', {
               "typeImputation": result.typeImputation,
               "imputation": result.imputation,
               "suividemandeId": result.id,
-              "etat": DEMANDE_ACCEPTE
+              "etat": etat //DEMANDE_ACCEPTE
             }
-            console.log(imputationPayload);
-            imputationStore.add(imputationPayload);/*.then((response) => {
+            imputationStore.add(imputationPayload);
+
+            /*imputationStore.add(imputationPayload).then((response) => {
+              console.log(response);
               if(response.status === 200 ){
+
                 this.dataDetails = response.data;
+                this.all(DEMANDE_NON_TRAITE);
               }
-            });
-            */
-            //add(imputationPayload);
+            });*/
           }
         })
       } catch (error) {
-        console.log(error);
+        //console.log(error);
         this.error = error
       } finally {
         this.loading = false
