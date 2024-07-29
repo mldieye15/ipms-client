@@ -9,78 +9,16 @@ const routes = [
   {
     //path: '/ipms/',
     path: '/',
-    component: () => import('@/layouts/default/Default.vue'),
+    component: () => import('@/layouts/auth/Default.vue'),
     children: [
       {
         path: '',
         name: 'home',
-        component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue'),
-      },
-      {
-        path: 'about',
-        name: 'about',
-        component: () => import(/* webpackChunkName: "about" */ '@/views/public/About.vue'),
-        meta: {
-          middleware: [ Middleware.guest]
-        }
-      },
-      {
-          path: 'aide',
-          name: 'aide',
-          component: () => import ( /* webpackChunkName: "aide" */ '@/views/public/Aide.vue'),
-          meta: {
-              middleware: [Middleware.guest]
-          }
+        component: () => import(/* webpackChunkName: "home" */ '@/views/auth/Login.vue'),
       }
     ],
   },
-  {
-    //path: '/ipms/auth',
-    path: '/auth',
-    component: () => import('@/layouts/auth/Default.vue'),
-    children: [{
-          path: 'login',
-          name: 'login',
-          component: () => import ( /* webpackChunkName: "login" */ '@/views/auth/Login.vue'),
-          meta: {
-              middleware: [Middleware.guest]
-          }
-      },
-      {
-        path: 'register',
-        name: 'register',
-        component: () =>
-            import ( /* webpackChunkName: "register" */ '@/views/auth/Register.vue'),
-        meta: {
-            middleware: [Middleware.guest]
-        }
-      },
-      {
-        path: 'forgot-password',
-        name: 'forgotPassword',
-        component: () => import(/* webpackChunkName: "forgotPassword" */ '@/views/auth/ForgotPassword.vue'),
-        meta: {
-          middleware: [ Middleware.guest]
-        }
-      },
-      {
-        path: 'reset-password',
-        name: 'resetPassword',
-        component: () => import(/* webpackChunkName: "resetPassword" */ '@/views/auth/ResetPassword.vue'),
-        meta: {
-          middleware: [ Middleware.guest]
-        }
-      },
-      {
-        path: 'active-compte',
-        name: 'activeCompte',
-        component: () => import(/* webpackChunkName: "activeCompte" */ '@/views/auth/ActiveCompte.vue'),
-        meta: {
-          middleware: [ Middleware.guest]
-        }
-      }
-    ],
-  },
+  
   {
     //path: '/ipms/app',
     path: '/app',

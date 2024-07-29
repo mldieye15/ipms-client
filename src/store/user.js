@@ -79,11 +79,11 @@ export const useUserStore = defineStore('user', {
       try {
         await axios.post(lougoutURL, payload).then((response) => {
           if(response.status === 200){
-            /*this.changeLoggedIn(false);
+            this.changeLoggedIn(false);
             localStorage.removeItem('refreshToken');
             localStorage.removeItem('username');
             localStorage.removeItem('token');
-            this.user = null;*/
+            this.user = null;
             this.resetCredentials();
           }
         })

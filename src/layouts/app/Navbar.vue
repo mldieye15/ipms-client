@@ -140,7 +140,7 @@ const loadFonction = async (module) => {
 const handleLogout = () => {
   console.log("handleLogout clicked");
   logout().then( () => {
-      router.push( { name: 'login'});
+      router.push( { name: 'home'});
       addNotification({
         show: true,
         text:  i18n.t('welcome')+' '+user.fullname,
