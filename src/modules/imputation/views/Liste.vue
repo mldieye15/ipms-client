@@ -63,7 +63,7 @@
 
 <script setup>
 import { storeToRefs } from "pinia";
-import { useStructsanteStore } from "../store";
+import { useImputationStore } from "../store";
 import { onMounted, reactive, ref } from "vue"
 import { useNotificationStore } from "@/store/notification";
 import { useI18n } from "vue-i18n";
@@ -73,7 +73,7 @@ const i18n = useI18n();
 const notificationStore = useNotificationStore();
 const { addNotification } = notificationStore;
 
-const villeStore = useStructsanteStore();
+const villeStore = useImputationStore();
 const { dataListe, headerTable, loading } = storeToRefs(villeStore);
 const { all, destroy } = villeStore;
 

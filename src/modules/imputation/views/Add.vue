@@ -13,7 +13,7 @@ import { useI18n } from "vue-i18n";
 
 //
 import FormVue from "./Form.vue";
-import { useStructsanteStore } from "../store";
+import { useImputationStore } from "../store";
 const i18n = useI18n();
 
 const notificationStore = useNotificationStore();
