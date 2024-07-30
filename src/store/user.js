@@ -28,6 +28,7 @@ export const useUserStore = defineStore('user', {
     getRefreshToken: (state) => state.refreshToken,
     getUsername: (state) => state.username,
     getError: (state) => state.error,
+    getPdfSrc: (state) => state.pdfSrc,
   },
 
   actions: {
@@ -134,6 +135,8 @@ export const useUserStore = defineStore('user', {
       } else{
         this.isLoggedIn = false;
       }
+      this.refreshToken = "";
+      this.username = "";
     },
     //  reset credentials
     resetCredentials() {

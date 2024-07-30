@@ -8,6 +8,8 @@ const imputationStore = useImputationStore();
 const  modulesURL = '/services/suivi-demande/api/v1';
 const  listeDemandeForViewURL = modulesURL+'/liste-demande-for-view';
 const  oneDemandeForViewURL = modulesURL+'/one-demande-for-view';
+const  imputationPdfURL = '/services/report/api/v1/imputations/from-demande/imputation';
+
 const DEMANDE_NON_TRAITE = 0;
 const DEMANDE_ACCEPTE = 1;
 const DEMANDE_REJETE = 2;
@@ -20,6 +22,8 @@ export const useDemandeStore = defineStore('demande', {
     dataRejeteListe: [],  //  List des données à afficher pour la table
     dataDetails: {},  //  Détails d'un élment,
     loading: true,  //  utilisé pour le chargement
+    error: null,
+    pdfSrc: '',
     /*breadcrumbs: [
       {
         text: 'Paramétrage',
@@ -45,7 +49,8 @@ export const useDemandeStore = defineStore('demande', {
   getters: {
     getDataListe: (state) => state.dataListe,
     getDataTraiteListe: (state) => state.dataTraiteListe,
-
+    getError: (state) => state.error,
+    getPdfSrc: (state) => state.pdfSrc
   },
 
   actions: {
@@ -158,6 +163,29 @@ export const useDemandeStore = defineStore('demande', {
         })
       } catch (error) {
         //console.log(error);
+        this.error = error
+      } finally {
+        this.loading = false
+      }
+    },
+    async downloadImputationPdf(imputation) {
+      this.pdfSrc = '';
+      this.loading = true;
+      this.error = null;
+      try {
+        await axios.get(`${imputationPdfURL}/${imputation}`, {
+          //responseType: "application/pdf",
+          responseType: "blob"
+        })
+        .then((response) => {
+          if(response.status === 200){
+            const blob = new Blob([response.data]);
+            const objectUrl =URL.createObjectURL(blob);
+            this.pdfSrc = objectUrl;
+          }
+        })
+      } catch (error) {
+        console.log(error);
         this.error = error
       } finally {
         this.loading = false

@@ -138,7 +138,6 @@ const loadFonction = async (module) => {
 
 //  deconnexion
 const handleLogout = () => {
-  console.log("handleLogout clicked");
   logout().then( () => {
       router.push( { name: 'home'});
       addNotification({
