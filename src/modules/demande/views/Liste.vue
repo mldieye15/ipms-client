@@ -41,12 +41,61 @@
                 v-model:items-selected="itemsSelected"
                 @click-row="showRow"
               >
-                <template #item-actions="item">
+              <template #item-actions="item">
+          <div class="actions-wrapper">
+            <!--
+            <router-link :to="{ name: 'demande-details', params: { id: item.id } }"> <v-icon small flat color="green dark">mdi-thumb-up</v-icon> </router-link>
+            <router-link :to="{ name: 'demande-edit', params: { id: item.id } }" class="ml-4"> <v-icon small flat color="blue dark">mdi-pencil</v-icon> </router-link>
+            -->
+            <v-dialog transition="dialog-top-transition" width="50%" height="auto">
+              <template v-slot:activator="{ props }">
+                <v-btn variant="text"  class="text" v-bind="props">
+                  <v-icon small flat green="green dark">mdi-thumb-up</v-icon>
+              </v-btn>
+              </template>
+              <template v-slot:default="{ isActive }">
+                <v-card>
+                  <v-toolbar color="primary" :title="$t('apps.forms.demande.demande')"></v-toolbar>
+                  <v-card-text>
+
+                    <div class="text-h6">{{ $t('apps.forms.acceptDemandMessage') }}</div>
+                  </v-card-text>
+                  <v-card-actions class="justify-end">
+                    <v-btn variant="text" color="primary" @click="isActive.value = false">{{ $t('apps.forms.annuler') }}</v-btn>
+                    <v-btn variant="outlined" color="black"  @click="accept(item.imputation)">{{ $t('apps.forms.oui') }}</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </template>
+            </v-dialog>
+
+            <v-dialog transition="dialog-top-transition" width="50%" height="auto">
+              <template v-slot:activator="{ props }">
+                <v-btn variant="text"  class="text" v-bind="props">
+                  <v-icon small flat color="red dark">mdi-thumb-down</v-icon>
+              </v-btn>
+              </template>
+              <template v-slot:default="{ isActive }">
+                <v-card>
+                  <v-toolbar color="primary" :title="$t('apps.forms.demande.demande')"></v-toolbar>
+                  <v-card-text>
+
+                    <div class="text-h6">{{ $t('apps.forms.refuseDemandMessage') }}</div>
+                  </v-card-text>
+                  <v-card-actions class="justify-end">
+                    <v-btn variant="text" color="primary" @click="isActive.value = false">{{ $t('apps.forms.annuler') }}</v-btn>
+                    <v-btn variant="outlined" color="black"  @click="reject(item.imputation)">{{ $t('apps.forms.oui') }}</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </template>
+            </v-dialog>
+          </div>
+        </template>
+                <!--<template #item-actions="item">
                   <div class="actions-wrapper">
                       <v-icon small flat color="green dark" @click="accept(item.imputation)">mdi-thumb-up</v-icon>
                       <v-icon small flat color="red dark" class="ma-3" @click="reject(item.imputation)">mdi-thumb-down</v-icon>
                   </div>
-                </template>
+                </template>-->
               </EasyDataTable>
             </v-container>
           </v-window-item>
@@ -72,7 +121,7 @@
                 </v-col>
               </v-row>
               <v-row>
-                
+
               </v-row>
               <EasyDataTable
                 :headers="headerTable"
@@ -83,7 +132,7 @@
               >
                 <template #item-actions="item">
                     <div class="actions-wrapper">
-                      
+
                         <v-dialog transition="dialog-top-transition" width="55%" height="auto">
                           <template v-slot:activator="{ props }">
                             <v-btn variant="text"  class="text" v-bind="props" @click="treatDialogClicked(item)">
@@ -220,9 +269,9 @@ const { all, approve, refuse, downloadImputationPdf } = demandeStore;
 
 const searchValue = ref("");
 const DEMANDE_NON_TRAITE = 0;
-const DEMANDE_TRAITE = 1;
-const DEMANDE_ACCEPTE = 1;
-const DEMANDE_REJETE = 2;
+const DEMANDE_TRAITE = 2;
+const DEMANDE_ACCEPTE = 2;
+const DEMANDE_REJETE = 3;
 //const clickedItem = reactive({});
 //
 const tab = ref(null);
@@ -291,7 +340,7 @@ const treatDialogClicked = (item) => {
 };
 
 const handleDownloadImputation = (imputation) => {
-  console.log("Download imputation for", imputation);
+console.log("Download imputation for", imputation);
   downloadImputationPdf(imputation).then( (response) => {
     console.log("Impuation downloaded!");
   });

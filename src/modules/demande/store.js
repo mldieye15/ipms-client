@@ -8,11 +8,12 @@ const imputationStore = useImputationStore();
 const  modulesURL = '/services/suivi-demande/api/v1';
 const  listeDemandeForViewURL = modulesURL+'/liste-demande-for-view';
 const  oneDemandeForViewURL = modulesURL+'/one-demande-for-view';
-const  imputationPdfURL = '/services/report/api/v1/imputations/from-demande/imputation';
+const  imputationPdfURL = '/services/report/api/v1/imputations/by-imputation';
 
 const DEMANDE_NON_TRAITE = 0;
-const DEMANDE_ACCEPTE = 1;
-const DEMANDE_REJETE = 2;
+//const DEMANDE_RECUPERE = 1;
+const DEMANDE_ACCEPTE = 2;
+const DEMANDE_REJETE = 3;
 
 
 export const useDemandeStore = defineStore('demande', {
@@ -42,6 +43,7 @@ export const useDemandeStore = defineStore('demande', {
       { text: 'Bénéficiaire', value: 'beneficiaire', align: 'start', sortable: true },
       { text: 'Lien', value: 'lien', align: 'start', sortable: true },
       { text: 'Structure', value: 'structure', align: 'start', sortable: true },
+      { text: 'Date demande', value: 'dateDemande' },
       { text: 'Actions', value: 'actions', sortable: false }
     ]
   }),
@@ -172,6 +174,8 @@ export const useDemandeStore = defineStore('demande', {
       this.pdfSrc = '';
       this.loading = true;
       this.error = null;
+      console.log("URL in downloadImputationPdf: ", `${imputationPdfURL}/${imputation}`);
+
       try {
         await axios.get(`${imputationPdfURL}/${imputation}`, {
           //responseType: "application/pdf",

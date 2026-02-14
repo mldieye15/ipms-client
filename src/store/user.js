@@ -9,7 +9,7 @@ export const useUserStore = defineStore('user', {
 
   state: () => ({
     isLoggedIn: false,
-    refreshToken:'',
+    refreshTokenValue:'', //  refreshToken:'',
     username:'',
     users: [],
     user: {
@@ -25,7 +25,7 @@ export const useUserStore = defineStore('user', {
   getters: {
     getLoggedIn: (state) => state.isLoggedIn,
     getUser: (state) => state.user,
-    getRefreshToken: (state) => state.refreshToken,
+    getRefreshToken: (state) => state.refreshTokenValue,
     getUsername: (state) => state.username,
     getError: (state) => state.error,
     getPdfSrc: (state) => state.pdfSrc,
@@ -52,9 +52,9 @@ export const useUserStore = defineStore('user', {
               initiale: response.data.initiale
             };
             this.error = false
-            console.log(this.user);
+            //console.log(this.user);
             this.changeLoggedIn(true);
-            this.refreshToken = response.data.refreshToken;
+            this.refreshTokenValue = response.data.refreshToken;
             this.username = response.data.username;
             axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.authenticationToken}`;
           }
@@ -96,14 +96,24 @@ export const useUserStore = defineStore('user', {
       }
     },
     //
-    async refreshToken(){
+    async refreshAccessToken(){
       //this.user = null;
       this.loading = true;
+      let refreshTokenLocal = localStorage.getItem('refreshToken');//(this.refreshToken == " ") ? localStorage.getItem('refreshToken') : this.refreshToken;
+      let usernameLocal = localStorage.getItem('username'); // this.username || localStorage.getItem('username');
+      if (!refreshTokenLocal || !usernameLocal) throw new Error('No refresh token');
+
       const payload = {
+        refreshToken: refreshTokenLocal, //this.refreshToken,
+        username: usernameLocal //this.username
+      };
+
+      /*const payload = {
         refreshToken: this.refreshToken,
         username: this.username
-      };
-      console.log(payload);
+      };*/
+      // console.log(payload);
+
       try {
         await axios.post(refreshtokenURL, payload).then((response) => {
           if(response.status === 200 && response.data.authenticationToken){
@@ -117,7 +127,7 @@ export const useUserStore = defineStore('user', {
               initiale: response.data.initiale
             };
             this.changeLoggedIn(true);
-            this.refreshToken = response.data.refreshToken;
+            this.refreshTokenValue = response.data.refreshToken;
             this.username = response.data.username;
           }
         })

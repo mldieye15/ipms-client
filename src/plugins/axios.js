@@ -8,10 +8,10 @@ setActivePinia(pinia);
 import { useUserStore } from "@/store/user";
 
 const router = useRouter();
-const  refreshtokenURL = '/auth/v1/refresh-token';
+const  refreshtokenURL = '/ipms/api/auth/v1/refresh-token';
 
 const userStore = useUserStore();
-const { resetCredentials, refreshToken } = userStore;
+const { resetCredentials, refreshAccessToken } = userStore;
 /*
 import { createPinia, setActivePinia } from "pinia"
 const pinia = createPinia();
@@ -63,18 +63,20 @@ axiosInstance.interceptors.response.use(
   },
   async function(error) {
     const originalRequest = error.config;
+    console.log(originalRequest);
     if ( error.response.status === 400 ) {
+      console.log("400");
       resetCredentials();
-      router.push( { name: 'login'});
+      router.push( { name: 'home'});
       return Promise.reject(error);
     } else if ( error.response.status === 401 && originalRequest.url.includes(refreshtokenURL)) {
       resetCredentials();
-      router.push( { name: 'login'});
-      router.push("/login");
+      router.push( { name: 'home'});
+      router.push("/");
       return Promise.reject(error);
     } else if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
-      await refreshToken();
+      await refreshAccessToken();
       const token = localStorage.getItem('token');
       error.config.headers.Authorization =  `Bearer ${token}`;
       return axiosInstance(originalRequest);

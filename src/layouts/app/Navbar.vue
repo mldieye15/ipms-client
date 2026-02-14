@@ -36,7 +36,7 @@
         </template>
         <v-card>
           <v-list-item-content class="justify-center">
-            <div class="mx-auto text-center">
+            <div class="mx-auto text-center px-4">
               <h3 v-if="user != null">{{ user.fullname }} </h3>
               <p class="text-caption mt-1" v-if="user != null">
                 {{ user.username }}
