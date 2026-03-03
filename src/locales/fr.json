@@ -9,6 +9,42 @@
     "updated": "Modification effectué!",
     "deleted": "Supression effectué!",
     "apple": "pas de pommes | une pomme | {count} pommes",
+    "affected": "Affectattion réussi!",
+    "yes": "Oui",
+    "no": "Non",
+    "addedField": "{field} ajouté avec succés!",
+    "updatedField": "{field} modifié avec succés!",
+    "deletedField": "{field} supprimé avec succés!",
+    "filter": "Filtre par",
+    "all": "Tous",
+    "sanscompte": "Sans compte",
+    "aveccompte": "Avec compte",
+    "selectField": "Séléctionnez {field}",
+    "integration": "Intégration des {field}",
+    "titleFormAddPopup": "Ajout {field}",
+    "titleFormMajPopup": "Modification {field}",
+    "titleFormDetailsPopup": "Détails {field}",
+    "titleFormDelPopup": "Suppression {field}",
+    "messages":{
+        "validations":{
+            "errors":{
+                "required": "Obligatoire",
+                "requiredfield": "Champ Obligatoire",
+                "checkform": "Merci de corriger les erreurs signalés",
+                "titlecheckform": "Erreur de validation"
+            },
+            "rules":{
+                "requiredWithMinlength": "{field} doit avoir {count} de cractéres au minimum.",
+                "requiredSelect": "Séléctionner un {field}.",
+                "invalidField": "{field} invalide.",
+                "invalidemail": "Email invalide",
+                "obligemail": "Email obligatoire",
+                "obligmdp": "Mot de passe obligatoire",
+                "oblilibelelle": "Libellé est obligatoire",
+                "montantNumericObligPositiveEntier": "Chiffre entier uniquement supérieur à zéro"
+            }
+        }
+    },
     "public": {
         "nav": {
             "top": {
@@ -35,14 +71,46 @@
         },
         "side": {},
         "forms":{
+            "nouveau": "Nouveau",
+            "nouvelle": "Nouvelle",
+            "ajouter": "Ajouter",
+            "refresh": "Actualiser",
+            "reload": "Recharger",
+            "enregistrer": "Enregister",
+            "annuler": "Annuler",
+            "delteTitle": "Supression",
+            "deleteMessage": "Voulez-vous vraiment supprimer l'enregistremnet?",
+            "acceptDemandMessage": "Acceptez-vous la demande?",
+            "refuseDemandMessage": "Confirmez-vous le rejet?",
+            "addTitle": "Ajout",
+            "modifTitle": "Modification",
+            "oui": "Oui",
+            "non": "Non",
+            "affecter": "Affecter",
+            "fermer": "Fermer",
+            "libelle": "Libellé",
+            "abreviation": "Libellé court",
+            "retour": "Retour",
+            "ajout": "Ajout",
+            "encours": "En cours",
             "authentification": {
                 "titre": "Authentifciation",
                 "username": "Nom d'utilisateur",
+                "email": "Email",
                 "mdp": "Mot de passe",
                 "mdpoublie": "Mot de passe oublié?",
                 "badcrentials": "Login ou mot de passe incorrecte.",
                 "btnconn": "Se connecter",
-                "pasdecompte": "Vous n'avez pas de compte?"
+                "pasdecompte": "Vous n'avez pas de compte?",
+                "btnsendmail": "Envoyer le mail de réinitialisation",
+                "btnresetpwd": "Réinitialiser",
+                "compteactive": "Compte activé, Se connecter",
+                "changepwdtitre": "Demande changement mot de passe",
+                "newPwd": "Nouveau mot de passe",
+                "confirmPwd": "Confirmation mot de passe",
+                "resetpwdtitre": "Réinitialisation du mot de passe",
+                "misstokenPwdNotConform": "Token absent ou mots de passe non conforme",
+                "mailsend": "Un mail de réinitialisation est envoyé"
             }
         },
         "footer":{}
@@ -79,6 +147,16 @@
             "annuler": "Annuler",
             "accept": "Accepter",
             "reject": "Rejeter",
+            "refresh": "Actualiser",
+            "reload": "Recharger",
+            "deleteMessage": "Voulez-vous vraiment supprimer l'enregistremnet?",
+            "affecter": "Affecter",
+            "fermer": "Fermer",
+            "libelle": "Libellé",
+            "abreviation": "Libellé court",
+            "retour": "Retour",
+            "ajout": "Ajout",
+            "encours": "En cours",
             "demande": {
                 "demande": "Demandes",
                 "nom": "Nom de la demane",
@@ -88,6 +166,16 @@
             "ville": {
                 "ville": "Villes",
                 "nom": "Nom de la ville"
+            },
+            "structsante": {
+                "structsante": "Structures sanitaires",
+                "libelle": "Libellé",
+                "categorie": "Catégorie",
+                "telephone": "Téléphone",
+                "responsable": "Responsable",
+                "interne": "Interne?",
+                "actif": "Actif?",
+                "email": "Email"
             }
         },
         "footer":{}

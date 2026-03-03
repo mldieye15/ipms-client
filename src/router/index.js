@@ -18,7 +18,43 @@ const routes = [
       }
     ],
   },
-  
+  {
+    //path: '/ipms/',
+    path: '/mdp-oublie',
+    component: () => import('@/layouts/auth/Default.vue'),
+    children: [
+      {
+        path: '',
+        name: 'forgotpwd',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/auth/ForgotPassword.vue'),
+      }
+    ],
+  },
+  {
+    //path: '/ipms/',
+    path: '/activation-compte',
+    component: () => import('@/layouts/auth/Default.vue'),
+    children: [
+      {
+        path: '',
+        name: 'compteactive',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/auth/ActiveCompte.vue'),
+      }
+    ],
+  },
+  {
+    //path: '/ipms/',
+    path: '/mdp-reset',
+    component: () => import('@/layouts/auth/Default.vue'),
+    children: [
+      {
+        path: '',
+        name: 'resetpwd',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/auth/ResetPassword.vue'),
+      }
+    ],
+  },
+
   {
     //path: '/ipms/app',
     path: '/app',

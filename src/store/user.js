@@ -4,6 +4,8 @@ import axios from '@/plugins/axios.js'
 const  loginURL = '/ipms/api/auth/v1/connexion';
 const  lougoutURL = '/ipms/api/auth/v1/deconnexion';
 const  refreshtokenURL = '/ipms/api/auth/v1/refresh-token';
+const  sendResetPwdURL = '/ipms/api/auth/v1/forgot-password';
+const  resetPwdURL = '/ipms/api/auth/v1/reset-password';
 
 export const useUserStore = defineStore('user', {
 
@@ -66,6 +68,7 @@ export const useUserStore = defineStore('user', {
         this.loading = false
       }
     },
+
     //
     async logout(){
       //this.user = null;
@@ -95,6 +98,7 @@ export const useUserStore = defineStore('user', {
         this.loading = false
       }
     },
+
     //
     async refreshAccessToken(){
       //this.user = null;
@@ -138,6 +142,7 @@ export const useUserStore = defineStore('user', {
         this.loading = false
       }
     },
+
     //
     changeLoggedIn() {
       if(localStorage.getItem('token')){
@@ -147,6 +152,50 @@ export const useUserStore = defineStore('user', {
       }
       this.refreshToken = "";
       this.username = "";
+    },
+
+    //  send reset mail
+    async sendResetpwdMail(payload){
+      this.loading = true;
+      this.error = null
+      try {
+        //`${loginURL}`
+        await axios.post(sendResetPwdURL, payload)
+        .then((response) => {
+          if(response.status === 200){
+            console.log(response.data);
+            //return response.data;
+          }
+        })
+      } catch (error) {
+        console.log(error);
+        this.error = true
+      } finally {
+        this.loading = false
+      }
+    },
+
+    //  reset password
+    async resetPwd(payload){
+      this.loading = true;
+      this.error = null
+      console.log(payload);
+
+      try {
+        //`${loginURL}`
+        await axios.post(resetPwdURL, payload)
+        .then((response) => {
+          if(response.status === 200){
+            console.log(response.data);
+            //return response.data;
+          }
+        })
+      } catch (error) {
+        console.log(error);
+        this.error = true
+      } finally {
+        this.loading = false
+      }
     },
     //  reset credentials
     resetCredentials() {

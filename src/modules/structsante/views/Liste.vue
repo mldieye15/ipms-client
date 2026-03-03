@@ -1,8 +1,76 @@
 <template>
   <div>
-    <p class="text-h6">{{ $t('apps.forms.ville.ville') }}</p>
+    <p class="text-h6">{{ $t('apps.forms.structsante.structsante') }}</p>
 
+    <v-card>
+      <v-tabs v-model="tab" bg-color="primary" >
+        <v-tab value="structure">Structures</v-tab>
+        <v-tab value="categorie">Catégories</v-tab>
+      </v-tabs>
+
+      <v-card-text>
+        <v-window v-model="tab">
+          <v-window-item value="structure">
+            <v-container class="my-1" grid-list-xl>
+              <v-row class="mb-0 mx-auto pa-1"  align="center">
+                <v-col cols="12" sm="6" md="4" >
+                  <v-text-field
+                    label="Libelle ou ..."
+                    placeholder="Placeholder"
+                    variant="underlined"
+                    append-inner-icon="mdi-magnify"
+                    v-model="searchValue"
+                  ></v-text-field>
+                </v-col>
+                <v-spacer></v-spacer>
+                <!-- <v-col cols="auto">
+                  <v-btn variant="outlined" color="blue" class="text" v-bind="props" @click="refresh">
+                    <router-link :to="{ name: 'structsante-add' }" class="">
+                      {{ $t('apps.forms.ajouter') }}
+                    </router-link>
+                  </v-btn>
+                </v-col> -->
+                <v-col cols="auto">
+                  <AddPopup
+                    :input-form="inputForm"
+                    :lib-titre-form="$t('titleFormAddPopup', {field:$t('apps.forms.structsante.structsante')})"
+                    :btn-add="true"
+                    :show-btn-add="true"
+                    icon-btn="mdi-delete"
+                    color-btn="blue-darken-1"
+                  />
+
+                </v-col>
+              </v-row>
+              <div id="row-clicked"></div>
+              <EasyDataTable
+                :headers="headerTable"
+                :items="dataListe"
+                :loading="loading"
+                buttons-pagination
+                :search-value="searchValue"
+                v-model:items-selected="itemsSelected"
+                @click-row="showRow"
+              >
+              <template #item-actions="item">
+                <div class="actions-wrapper">
+
+                  <!-- <router-link :to="{ name: 'structsante-details', params: { id: item.id } }" class="ml-4"> <v-icon small flat color="blue dark">mdi-pencil</v-icon> </router-link> -->
+                </div>
+              </template>
+            </EasyDataTable>
+            </v-container>
+          </v-window-item>
+          <v-window-item value="categorie">
+            Categories
+          </v-window-item>
+        </v-window>
+      </v-card-text>
+    </v-card>
+    <!--
     <v-container class="my-5" grid-list-xl>
+      structure sante
+
       <v-row class="mb-0 mx-auto pa-1"  align="center">
         <v-col cols="12" sm="6" md="4" >
           <v-text-field
@@ -56,7 +124,9 @@
           </div>
         </template>
       </EasyDataTable>
+
     </v-container>
+     -->
 
   </div>
 </template>
@@ -67,25 +137,42 @@ import { useStructsanteStore } from "../store";
 import { onMounted, reactive, ref } from "vue"
 import { useNotificationStore } from "@/store/notification";
 import { useI18n } from "vue-i18n";
+import AddPopup from "../components/AddPopup.vue";
 
 const i18n = useI18n();
 
 const notificationStore = useNotificationStore();
 const { addNotification } = notificationStore;
 
-const villeStore = useStructsanteStore();
-const { dataListe, headerTable, loading } = storeToRefs(villeStore);
-const { all, destroy } = villeStore;
+const structSanteStore = useStructsanteStore();
+const { dataListe, headerTable, loading } = storeToRefs(structSanteStore);
+const { all, destroy } = structSanteStore;
 
 const liste = reactive({ items: [] });
 const headers = reactive({ items: [] });
 const searchValue = ref("");
 const dialog = ref(false);
+//
+const tab = ref(null);
+
+//
+const inputForm = reactive({
+  libelle: '',
+  telephone: '',
+  responsbale: '',
+  interne: 'N',
+  actif: 'O',
+  email: '',
+  typeStructureSante: '',
+});
 
 onMounted(()=>{
   all();
 });
-
+const refresh = () => {
+  all();
+};
+/*
 const del = (id) => {
   destroy(id).then( () => {
     addNotification({
@@ -97,6 +184,7 @@ const del = (id) => {
       all();
   });
 }
+  */
 </script>
 <style scoped>
 .v-text-field {
