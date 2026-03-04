@@ -187,7 +187,7 @@
 
 
 <script setup>
-import { shallowRef, onMounted, onUnmounted, reactive, ref } from 'vue'
+import { shallowRef, onMounted, onUnmounted, reactive, ref,watch } from 'vue'
 import { storeToRefs } from "pinia"
 import { useStructsanteStore } from "../store"
 import { useTypeStructsanteStore } from '@/modules/typestructsante/store'
@@ -246,58 +246,13 @@ const props = defineProps({
 })
 
 const localForm = reactive({ ...props.inputForm })
+const emit = defineEmits(['open'])
 
-
-/*const save = async () => {
-  const { valid } = await form.value.validate()
-  //  validation du formulaire
-  if (!valid) {
-    if(props.btnAdd){ //  Ajout
-      console.log("Ajout: ", localForm);
-      await structureSanteStore.add(localForm).then( () => {
-        notificationStore.addNotification({
-          show: true,
-          text: $t('addedField', {field:$t('apps.forms.structsante.structsante')}),
-          color: `${ALERT_NOTIFTCATION_COLOR.value}`,
-          id: Math.floor(Math.random()*1000)
-        });
-
-        const addedData = reactive({
-          id: typeCompteCaisseStore.typeCompteCaisse?.id ?? null,
-          libelle: localForm?.libelle ?? '',
-          telephone: localForm?.telephone ?? '',
-          responsbale: localForm?.responsbale ?? '',
-          interne: localForm?.interne ?? 'N',
-          actif: localForm?.actif ?? 'O',
-          email: localForm?.email ?? '',
-          typeStructureSante: localForm?.typeStructureSante ?? '',
-        });
-
-        structureSanteStore.dataListe.unshift(addedData);
-      });
-    } else{ //  Modification
-      console.log("Modification: ", localForm)
-      await structureSanteStore.modify(props.idItem, localForm).then( () => {
-        notificationStore.addNotification({
-          show: true,
-          text: $t('updatedField', {field:$t('apps.forms.structsante.structsante')}),
-          color: `${ALERT_NOTIFTCATION_COLOR.value}`,
-          id: Math.floor(Math.random()*1000)
-        });
-        });
-    }
-    showError.value = true
-    return
-  }
-
-  console.log("Formulaire valide :", localForm)
-
-  // 🔥 EMIT PROPRE
-  // emit('save', { ...localForm })
-
-  dialog.value = false
+const handleOpen = () => {
+  emit('open', props.idItem)
+  dialog.value = true
 }
-*/
+
 const save = async () => {
   const { valid } = await form.value.validate()
 
@@ -393,4 +348,13 @@ onUnmounted(() => {})
 const changeCategorie  = async (id) => {
   console.log(id);
 }
+
+//
+watch(
+  () => props.inputForm,
+  (newVal) => {
+    Object.assign(localForm, newVal)
+  },
+  { deep: true }
+)
 </script>

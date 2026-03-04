@@ -5,6 +5,8 @@ import axios from '@/plugins/axios.js'
 const  modulesURL = '/services/structure-sante/api/v1';
 const  allBruteURL = modulesURL+'/all-brute';
 const  addURL = modulesURL+'/add';
+const  oneURL = modulesURL+'/one';
+const  majURL = modulesURL+'/maj';
 
 export const useStructsanteStore = defineStore('structsante', {
   state: () => ({
@@ -42,9 +44,11 @@ export const useStructsanteStore = defineStore('structsante', {
       }
     },
     //  recupérer les informations d'une académie par son ide et le mettre dans la tabel dataDetails
-    async one(academie) {
+    async one(id) {
+      console.log(`${oneURL}/${id}`);
+
       try {
-        await axios.get(`${modulesURL}/${academie}`)
+        await axios.get(`${oneURL}/${id}`)
         .then((response) => {
           if(response.status === 200){
             this.dataDetails = response.data;
@@ -81,10 +85,12 @@ export const useStructsanteStore = defineStore('structsante', {
       try {
         console.log("Id: ", id);
         console.log("Payload: ", payload);
-        await axios.put(`${modulesURL}/${id}`, payload)
+        await axios.put(`${majURL}/${id}`, payload)
         .then((response) => {
           if(response.status === 200 ){
             this.dataDetails = response.data;
+            console.log("Response: ", this.dataDetails);
+            return response.data;
           }
         })
       } catch (error) {
