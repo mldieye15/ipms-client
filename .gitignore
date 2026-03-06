@@ -1,7 +1,8 @@
 .DS_Store
 node_modules
 /dist
-
+cert/cert.pem
+cert/key.pem
 
 # local env files
 .env.local
