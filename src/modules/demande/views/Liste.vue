@@ -268,14 +268,16 @@ const { dataListe, headerTable, loading, dataTraiteListe, dataRejeteListe, pdfSr
 const { all, approve, refuse, downloadImputationPdf } = demandeStore;
 
 const searchValue = ref("");
+const itemsSelected = ref([]);
 const DEMANDE_NON_TRAITE = 0;
 const DEMANDE_TRAITE = 2;
 const DEMANDE_ACCEPTE = 2;
 const DEMANDE_REJETE = 3;
-//const clickedItem = reactive({});
-//
 const tab = ref(null);
-//
+
+const showRow = (item) => {
+  console.log(item);
+};
 
 onMounted(()=>{
   all(DEMANDE_NON_TRAITE);
@@ -283,52 +285,37 @@ onMounted(()=>{
   all(DEMANDE_REJETE);
 });
 
-const accept = (id) => {
-  approve(id, DEMANDE_ACCEPTE).then( () => {
-    addNotification({
-        show: true,
-        text:  i18n.t('saved'),
-        color: 'blue'
-      });
-
-  });
-  //isActive.value=false;
-  //dialog.value=false;
-  removeItem(id, DEMANDE_ACCEPTE);
-};
-
-const removeItem = (id, etat) => {
-  let newArray = []
-  dataListe.value.forEach((item) => {
-    if(item.imputation != id){
-      newArray.push(item);
-    } else{
-      if(etat === DEMANDE_ACCEPTE){
-        dataTraiteListe.value.unshift(item);
-      } else{
-        dataRejeteListe.value.unshift(item);
-      }
-    }
-  });
-  dataListe.value = [];
-  dataListe.value = newArray;
-};
-
-const refresh = () => {
+const refreshAll = () => {
   all(DEMANDE_NON_TRAITE);
   all(DEMANDE_TRAITE);
   all(DEMANDE_REJETE);
 };
-const reject = (id) => {
-  refuse(id).then( () => {
+
+const accept = (id) => {
+  approve(id, DEMANDE_ACCEPTE).then(() => {
     addNotification({
-        show: true,
-        text:  i18n.t('saved'),
-        color: 'blue'
-      });
+      show: true,
+      text: i18n.t('saved'),
+      color: 'blue'
+    });
+    refreshAll();
   });
-  removeItem(id, DEMANDE_REJETE);
-}
+};
+
+const refresh = () => {
+  refreshAll();
+};
+
+const reject = (id) => {
+  refuse(id).then(() => {
+    addNotification({
+      show: true,
+      text: i18n.t('saved'),
+      color: 'blue'
+    });
+    refreshAll();
+  });
+};
 
 const treatDialogClicked = (item) => {
   console.log(item);

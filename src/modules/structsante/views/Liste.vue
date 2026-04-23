@@ -59,7 +59,7 @@
                         <v-dialog transition="dialog-top-transition" width="55%" height="auto">
                           <template #activator="{ props: activatorProps }">
                             <v-btn variant="text"  class="text" v-bind="activatorProps" @click="treatDialogClicked(slotProps)">
-                              <v-icon small flat color="green dark">mdi-file-document</v-icon>
+                              <v-icon small flat color="green dark">mdi-pencil</v-icon>
                             </v-btn>
                           </template>
                           <template v-slot:default="{ isActive }">
@@ -190,7 +190,7 @@
                                 <v-btn
                                   :text="$t('apps.forms.fermer')"
                                   variant="plain"
-                                  @click="close"
+                                  @click="isActive.value = false"
                                 />
 
                                 <v-btn
@@ -205,7 +205,7 @@
                           </template>
                         </v-dialog>
 
-                      <v-icon small flat color="blue dark" class="ma-3" @click="maj(item.id)">mdi-pencil</v-icon>
+                      <!-- <v-icon small flat color="blue dark" class="ma-3" @click="maj(item.id)">mdi-pencil</v-icon>-->
                   </div>
                 </template>
             </EasyDataTable>
@@ -263,40 +263,35 @@ const inputForm = reactive({
   correspondance: null
 });
 const form = shallowRef();
-//
+const showError = ref(false);
+const saveDisabled = ref(false);
+const itemsSelected = ref([]);
+
+const showRow = (item) => {
+  console.log(item);
+};
+
+const changeCategorie = (value) => {
+  console.log(value);
+};
+
 onMounted(()=>{
   all();
 });
+
 const refresh = () => {
   all();
 };
-/*
-const del = (id) => {
-  destroy(id).then( () => {
-    addNotification({
-        show: true,
-        text:  i18n.t('deleted'),
-        color: 'blue'
-      });
-      dialog.value=false;
-      all();
-  });
-}
-  */
 
- const maj = async (id) =>{
-  console.log(id);
-
-  await structureSanteStore.one(id).then( () => {
-
+const maj = async (id) => {
+  await structureSanteStore.one(id).then(() => {
     if (dataDetails.value) {
       Object.assign(inputForm, dataDetails.value);
     }
   });
-}
+};
 
 const treatDialogClicked = (item) => {
-  console.log(item);
   inputForm.libelle = item.libelle;
   inputForm.telephone = item.telephone;
   inputForm.responsbale = item.responsbale;
@@ -304,72 +299,37 @@ const treatDialogClicked = (item) => {
   inputForm.actif = item.actif;
   inputForm.email = item.email;
   inputForm.typeStructureSante = item.typeStructureSante.id;
-  //this.clickedItem=id;
 };
 
-//
 const save = async (item) => {
-  console.log("Id a modifier: ",item.id);
+  const { valid } = await form.value.validate();
 
-  const { valid } = await form.value.validate()
-
-  // ❌ Si formulaire invalide
   if (!valid) {
-    showError.value = true
-    return
+    showError.value = true;
+    return;
   }
 
   try {
-    console.log("Modification :", inputForm)
+    await structureSanteStore.modify(item.id, inputForm);
 
-    const response = await structureSanteStore.modify(item.id, inputForm)
+    notificationStore.addNotification({
+      show: true,
+      text: i18n.t('updatedField', { field: i18n.t('apps.forms.structsante.structsante') }),
+      color: 'success',
+      id: Math.floor(Math.random() * 1000)
+    });
 
-    // 🔥 Récupération ID depuis la réponse backend
-    const addedData = {
-      id: response?.id ?? null,
-      libelle: response?.libelle ?? localForm.libelle,
-      telephone: response?.telephone ?? localForm.telephone,
-      responsbale: response?.responsbale ?? localForm.responsbale,
-      interne: response?.interne ?? localForm.interne,
-      actif: response?.actif ?? localForm.actif,
-      email: response?.email ?? localForm.email,
-      typeStructureSante: response?.typeStructureSante.libelle ?? localForm.typeStructureSante
-    }
-
-
-  const index = structureSanteStore.dataListe.findIndex(
-    item => item.id === props.idItem
-  )
-
-  if (index !== -1) {
-    structureSanteStore.dataListe[index] = {
-      ...structureSanteStore.dataListe[index],
-      ...response
-    }
-  }
-
-  notificationStore.addNotification({
-    show: true,
-    text: t('updatedField', {
-      field: t('apps.forms.structsante.structsante')
-    }),
-    color: ALERT_NOTIFTCATION_COLOR.value,
-    id: Math.floor(Math.random() * 1000)
-  })
-
-
-  //dialog.value = false
-  showError.value = false
-
+    showError.value = false;
+    await all();
   } catch (error) {
-    console.error("Erreur lors de la sauvegarde :", error)
+    console.error("Erreur lors de la sauvegarde :", error);
 
     notificationStore.addNotification({
       show: true,
       text: "Une erreur est survenue",
       color: "error",
       id: Math.floor(Math.random() * 1000)
-    })
+    });
   }
 }
 </script>
