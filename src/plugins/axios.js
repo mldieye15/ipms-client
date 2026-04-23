@@ -1,40 +1,13 @@
 import axios from 'axios';
-import { useRouter } from 'vue-router';
-import { createPinia, setActivePinia } from "pinia"
+import router from '@/router';
 
-const pinia = createPinia();
-setActivePinia(pinia);
+const refreshtokenURL = '/ipms/api/auth/v1/refresh-token';
 
-import { useUserStore } from "@/store/user";
-
-const router = useRouter();
-const  refreshtokenURL = '/ipms/api/auth/v1/refresh-token';
-
-const userStore = useUserStore();
-const { resetCredentials, refreshAccessToken } = userStore;
-/*
-import { createPinia, setActivePinia } from "pinia"
-const pinia = createPinia();
-setActivePinia(pinia);
-*/
-
-//const userStore = useUserStore();
-//const { resetCredentials, refreshToken } = userStore;
-//const { resetCredentials, refreshToken } = userStore;
-/*
-
-const router = useRouter();
-const userStore = useUserStore();
-const { resetCredentials, refreshToken } = userStore;
-const  refreshtokenURL = '/auth/v1/refresh-token';
-*/
 let lang = localStorage.getItem('lang') || import.meta.env.VITE_I18N_LOCALE || 'fr';
-
 
 const defaultOptions = {
   baseURL: import.meta.env.VITE_BASE_URL,
   crossdomain: true,
-  //withCredentials: true,
   headers: {
     'Access-Control-Allow-Origin': '*',
     'Content-Type': 'application/json',
@@ -46,44 +19,51 @@ const defaultOptions = {
 
 let axiosInstance = axios.create(defaultOptions);
 
-/* `axiosInstance` is an instance of the Axios library that is configured with default options. It is
-used to make HTTP requests to a server. The default options include the base URL, cross-domain
-settings, headers, and interceptors. The interceptors are used to modify the request and response
-before they are sent or received. */
 axiosInstance.interceptors.request.use(function (config) {
   const token = localStorage.getItem('token');
-  config.headers.Authorization =  token ? `Bearer ${token}` : '';
+  config.headers.Authorization = token ? `Bearer ${token}` : '';
   return config;
 });
 
-//  Add a response interceptor
 axiosInstance.interceptors.response.use(
-  function(response){
+  function (response) {
     return response;
   },
-  async function(error) {
+  async function (error) {
+    // Import du store en lazy pour éviter la dépendance circulaire
+    const { useUserStore } = await import('@/store/user');
+    const userStore = useUserStore();
+
     const originalRequest = error.config;
-    console.log(originalRequest);
-    if ( error.response.status === 400 ) {
-      console.log("400");
-      resetCredentials();
-      router.push( { name: 'home'});
+
+    if (error.response.status === 400) {
+      userStore.resetCredentials();
+      router.push({ name: 'home' });
       return Promise.reject(error);
-    } else if ( error.response.status === 401 && originalRequest.url.includes(refreshtokenURL)) {
-      resetCredentials();
-      router.push( { name: 'home'});
-      router.push("/");
-      return Promise.reject(error);
-    } else if (error.response.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      await refreshAccessToken();
-      const token = localStorage.getItem('token');
-      error.config.headers.Authorization =  `Bearer ${token}`;
-      return axiosInstance(originalRequest);
     }
+
+    if (error.response.status === 401 && originalRequest.url.includes(refreshtokenURL)) {
+      userStore.resetCredentials();
+      router.push({ name: 'home' });
+      return Promise.reject(error);
+    }
+
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      try {
+        await userStore.refreshAccessToken();
+        const token = localStorage.getItem('token');
+        error.config.headers.Authorization = `Bearer ${token}`;
+        return axiosInstance(originalRequest);
+      } catch (refreshError) {
+        userStore.resetCredentials();
+        router.push({ name: 'home' });
+        return Promise.reject(refreshError);
+      }
+    }
+
     return Promise.reject(error);
   }
 );
 
-//
 export default axiosInstance;
