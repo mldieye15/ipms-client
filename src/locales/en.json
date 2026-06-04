@@ -9,6 +9,42 @@
     "updated": "Update completed!",
     "deleted": "Deletion done!",
     "apple": "no apples | one apple | {count} apples",
+    "affected": "Assignment successful!",
+    "yes": "Yes",
+    "no": "No",
+    "addedField": "{field} added successfully!",
+    "updatedField": "{field} successfully modified!",
+    "deletedField": "{field} successfully deleted!",
+    "filter": "Filter by",
+    "all": "All",
+    "sanscompte": "No account",
+    "aveccompte": "With account",
+    "selectField": "Select {field} ",
+    "integration": "Integration of {field}",
+    "titleFormAddPopup": "Addition {field}",
+    "titleFormMajPopup": "Modification {field}",
+    "titleFormDetailsPopup": "Details {field}",
+    "titleFormDelPopup": "Deletion {field}",
+    "messages":{
+        "validations":{
+            "errors":{
+                "required": "Mandatory",
+                "requiredfield": "Required field",
+                "checkform": "Please correct the reported errors.",
+                "titlecheckform": "Validation error"
+            },
+            "rules":{
+                "requiredWithMinlength": "{field} must have at least {count} characters.",
+                "requiredSelect": "Select a {field}.",
+                "invalidField": "{field} invalid.",
+                "invalidemail": "Invalid email",
+                "obligemail": "Email is required",
+                "obligmdp": "Password is required",
+                "oblilibelelle": "Label is required",
+                "montantNumericObligPositiveEntier": "Integer only greater than zero"
+            }
+        }
+    },
     "public": {
         "nav": {
             "top": {
@@ -40,14 +76,46 @@
         },
         "side": {},
         "forms":{
+            "nouveau": "New",
+            "nouvelle": "New",
+            "ajouter": "Add",
+            "refresh": "Refresh",
+            "reload": "Reload",
+            "enregistrer": "Save",
+            "annuler": "Cancel",
+            "delteTitle": "Deletion",
+            "deleteMessage": "Are you sure you want to delete the recording?",
+            "acceptDemandMessage": "Do you accept the request?",
+            "refuseDemandMessage": "Do you confirm the rejection?",
+            "addTitle": "Addition",
+            "modifTitle": "Amendment",
+            "oui": "Yes",
+            "non": "No",
+            "affecter": "Affect",
+            "fermer": "Close",
+            "libelle": "Label",
+            "abreviation": "Short label",
+            "retour": "Back",
+            "ajout": "Addition",
+            "encours": "In progress",
             "authentification": {
                 "titre": "Authentication",
                 "username": "Username",
+                "email": "E-mail",
                 "mdp": "Password",
                 "mdpoublie": "Forgot password?",
                 "badcrentials": "Incorrect login or password.",
                 "btnconn": "Login",
-                "pasdecompte": "Don't have an account?"
+                "pasdecompte": "Don't have an account?",
+                "btnsendmail": "Send the reset email",
+                "btnresetpwd": "Reset",
+                "compteactive": "Account activated, Log in",
+                "changepwdtitre": "Password change request",
+                "newPwd": "New Password",
+                "confirmPwd": "Confirm password",
+                "resetpwdtitre": "Password reset",
+                "misstokenPwdNotConform": "Missing token or non-compliant password",
+                "mailsend": "A reset email is sent"
             }
         },
         "footer":{}
@@ -84,6 +152,15 @@
             "annuler": "Cancel",
             "accept": "Accept",
             "reject": "Reject",
+            "refresh": "Refresh",
+            "reload": "Reload",
+            "affecter": "Affect",
+            "fermer": "Close",
+            "libelle": "Label",
+            "abreviation": "Short label",
+            "retour": "Back",
+            "ajout": "Addition",
+            "encours": "In progress",
             "demande": {
                 "academie": "Demand",
                 "nom": "Damand name",
@@ -93,6 +170,16 @@
             "ville": {
                 "ville": "Cities",
                 "nom": "City name"
+            },
+            "structsante": {
+                "structsante": "Sanitary facilities",
+                "libelle": "Label",
+                "categorie": "Category",
+                "telephone": "Phone",
+                "responsable": "Responsible",
+                "interne": "Internal?",
+                "actif": "Active?",
+                "email": "E-mail"
             }
         },
         "footer":{}

@@ -9,78 +9,52 @@ const routes = [
   {
     //path: '/ipms/',
     path: '/',
-    component: () => import('@/layouts/default/Default.vue'),
+    component: () => import('@/layouts/auth/Default.vue'),
     children: [
       {
         path: '',
         name: 'home',
-        component: () => import(/* webpackChunkName: "home" */ '@/views/Home.vue'),
-      },
-      {
-        path: 'about',
-        name: 'about',
-        component: () => import(/* webpackChunkName: "about" */ '@/views/public/About.vue'),
-        meta: {
-          middleware: [ Middleware.guest]
-        }
-      },
-      {
-          path: 'aide',
-          name: 'aide',
-          component: () => import ( /* webpackChunkName: "aide" */ '@/views/public/Aide.vue'),
-          meta: {
-              middleware: [Middleware.guest]
-          }
+        component: () => import(/* webpackChunkName: "home" */ '@/views/auth/Login.vue'),
       }
     ],
   },
   {
-    //path: '/ipms/auth',
-    path: '/auth',
+    //path: '/ipms/',
+    path: '/mdp-oublie',
     component: () => import('@/layouts/auth/Default.vue'),
-    children: [{
-          path: 'login',
-          name: 'login',
-          component: () => import ( /* webpackChunkName: "login" */ '@/views/auth/Login.vue'),
-          meta: {
-              middleware: [Middleware.guest]
-          }
-      },
+    children: [
       {
-        path: 'register',
-        name: 'register',
-        component: () =>
-            import ( /* webpackChunkName: "register" */ '@/views/auth/Register.vue'),
-        meta: {
-            middleware: [Middleware.guest]
-        }
-      },
-      {
-        path: 'forgot-password',
-        name: 'forgotPassword',
-        component: () => import(/* webpackChunkName: "forgotPassword" */ '@/views/auth/ForgotPassword.vue'),
-        meta: {
-          middleware: [ Middleware.guest]
-        }
-      },
-      {
-        path: 'reset-password',
-        name: 'resetPassword',
-        component: () => import(/* webpackChunkName: "resetPassword" */ '@/views/auth/ResetPassword.vue'),
-        meta: {
-          middleware: [ Middleware.guest]
-        }
-      },
-      {
-        path: 'active-compte',
-        name: 'activeCompte',
-        component: () => import(/* webpackChunkName: "activeCompte" */ '@/views/auth/ActiveCompte.vue'),
-        meta: {
-          middleware: [ Middleware.guest]
-        }
+        path: '',
+        name: 'forgotpwd',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/auth/ForgotPassword.vue'),
       }
     ],
   },
+  {
+    //path: '/ipms/',
+    path: '/activation-compte',
+    component: () => import('@/layouts/auth/Default.vue'),
+    children: [
+      {
+        path: '',
+        name: 'compteactive',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/auth/ActiveCompte.vue'),
+      }
+    ],
+  },
+  {
+    //path: '/ipms/',
+    path: '/mdp-reset',
+    component: () => import('@/layouts/auth/Default.vue'),
+    children: [
+      {
+        path: '',
+        name: 'resetpwd',
+        component: () => import(/* webpackChunkName: "home" */ '@/views/auth/ResetPassword.vue'),
+      }
+    ],
+  },
+
   {
     //path: '/ipms/app',
     path: '/app',

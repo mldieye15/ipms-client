@@ -9,6 +9,42 @@
     "updated": "تحديث الانتهاء!",
     "deleted": "تم الحذف!",
     "apple": "لا تفاح | تفاحة واحدة | {count} تفاحات",
+    "affected": "المهمة ناجحة!",
+    "yes": "نعم",
+    "no": "لا",
+    "addedField": "{field} تمت الإضافة بنجاح!",
+    "updatedField": "{field} تم التعديل بنجاح!",
+    "deletedField": "{field} تم الحذف بنجاح!",
+    "filter": "تصفية حسب",
+    "all": "الجميع",
+    "sanscompte": "لا يوجد حساب",
+    "aveccompte": "مع الحساب",
+    "selectField": "{field} يختار",
+    "integration": "{field} دمج",
+    "titleFormAddPopup": "{field} إضافة",
+    "titleFormMajPopup": "{field} تعديل",
+    "titleFormDetailsPopup": "{field} تفاصيل",
+    "titleFormDelPopup": "{field} الحذف",
+    "messages":{
+        "validations":{
+            "errors":{
+                "required": "إلزامي",
+                "requiredfield": "الحقل الإلزامي",
+                "checkform": "يرجى تصحيح الأخطاء المبلغ عنها.",
+                "titlecheckform": "خطأ في التحقق"
+            },
+            "rules":{
+                "requiredWithMinlength": "يجب أن يحتوي {field} على {count} من الأحرف على الأقل.",
+                "requiredSelect": "حدد {field}.",
+                "invalidField": "{field} غير صالح.",
+                "invalidemail": "بريد إلكتروني غير صالح",
+                "obligemail": "البريد الإلكتروني مطلوب",
+                "obligmdp": "كلمة المرور مطلوبة",
+                "oblilibelelle": "الصياغة مطلوبة",
+                "montantNumericObligPositiveEntier": "العدد الصحيح أكبر من الصفر فقط"
+            }
+        }
+    },
     "public": {
         "nav": {
             "top": {
@@ -35,14 +71,46 @@
         },
         "side": {},
         "forms":{
+            "nouveau": "جديد",
+            "nouvelle": "جديد",
+            "ajouter": "يضيف",
+            "refresh": "ينعش",
+            "reload": "إعادة تحميل",
+            "enregistrer": "يسجل",
+            "annuler": "يلغي",
+            "delteTitle": "حذف",
+            "deleteMessage": "هل أنت متأكد أنك تريد حذف التسجيل؟",
+            "acceptDemandMessage": "هل تقبل الطلب؟",
+            "refuseDemandMessage": "هل تؤكد الرفض؟",
+            "addTitle": "إضافة",
+            "modifTitle": "تعديل",
+            "oui": "نعم",
+            "non": "لا",
+            "affecter": "يؤثر",
+            "fermer": "يغلق",
+            "libelle": "الصياغة",
+            "abreviation": "صياغة قصيرة",
+            "retour": "خلف",
+            "ajout": "إضافة",
+            "encours": "في تَقَدم",
             "authentification": {
                 "titre": "المصادقة",
                 "username": "سم المستخدم",
+                "email": "بريد إلكتروني",
                 "mdp": "كلمة السر",
                 "mdpoublie": "نسيت كلمة السر؟",
                 "badcrentials": ".تسجيل الدخول أو كلمة المرور غير صحيحة",
                 "btnconn": "تسجيل الدخول",
-                "pasdecompte": "لا يوجد لديك حساب؟"
+                "pasdecompte": "لا يوجد لديك حساب؟",
+                "btnsendmail": "أرسل بريدًا إلكترونيًا لإعادة التعيين",
+                "btnresetpwd": "إعادة ضبط",
+                "compteactive": "تم تفعيل الحساب، تسجيل الدخول",
+                "changepwdtitre": "طلب تغيير كلمة المرور",
+                "newPwd": "كلمة المرور الجديدة",
+                "confirmPwd": "تأكيد كلمة المرور",
+                "resetpwdtitre": "إعادة تعيين كلمة المرور",
+                "misstokenPwdNotConform": "رمز مميز مفقود أو كلمة مرور غير متوافقة",
+                "mailsend": "يتم إرسال بريد إلكتروني لإعادة التعيين"
             }
         },
         "footer":{}
@@ -79,6 +147,16 @@
             "annuler": "يلغي",
             "accept": "يقبل",
             "reject": "يرفض",
+            "refresh": "ينعش",
+            "reload": "إعادة تحميل",
+            "deleteMessage": "هل أنت متأكد أنك تريد حذف التسجيل؟",
+            "affecter": "يؤثر",
+            "fermer": "يغلق",
+            "libelle": "الصياغة",
+            "abreviation": "صياغة قصيرة",
+            "retour": "خلف",
+            "ajout": "إضافة",
+            "encours": "في تَقَدم",
             "demande": {
                 "academie": "الطلبات",
                 "nom": "اسم الاكاديمية",
@@ -88,6 +166,16 @@
             "ville": {
                 "ville": "مدن",
                 "nom": "اسم المدينة"
+            },
+            "structsante": {
+                "structsante": "المرافق الصحية",
+                "libelle": "ملصق",
+                "categorie": "فئة",
+                "telephone": "هاتف",
+                "responsable": "مسؤول",
+                "interne": "داخلي؟",
+                "actif": "نشيط؟",
+                "email": "بريد إلكتروني"
             }
         },
         "footer":{}

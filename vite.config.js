@@ -10,6 +10,9 @@ import { resolve, dirname } from 'node:path'
 //  i18n
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 
+//
+import fs from 'fs'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -42,7 +45,17 @@ export default defineConfig({
     ],
   },
   server: {
-    port: 3000,
-    proxy: "http://localhost:8203"
+  port: 3000,
+  https: {
+    key: fs.readFileSync('./cert/key.pem'),
+    cert: fs.readFileSync('./cert/cert.pem'),
   },
+  proxy: {
+    '/ipms': {
+      target: 'https://ipms-api.ucad.sn:8203',
+      changeOrigin: true,
+      secure: false
+    }
+  }
+}
 })
